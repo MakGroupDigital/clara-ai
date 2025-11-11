@@ -1,0 +1,21 @@
+# Settings to manage and configure a Firebase App Hosting backend.
+# https://firebase.google.com/docs/app-hosting/configure
+
+codebase:
+  # The GitHub repository to deploy from
+  source:
+    github:
+      owner: MakGroupDigital
+      name: clara.ai
+      branch: main # Or your default branch name like 'master'
+
+runConfig:
+  # Increase this value if you'd like to automatically spin up
+  # more instances in response to increased traffic.
+  maxInstances: 1
+  # Make secrets available to the run environment as environment variables.
+  # Secrets are created and managed using Google Cloud Secret Manager.
+  # https://firebase.google.com/docs/app-hosting/configure#manage-secrets
+  secrets:
+    - secret: RESEND_API_KEY
+    - secret: GITHUB_TOKEN

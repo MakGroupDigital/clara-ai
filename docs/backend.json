@@ -1,0 +1,375 @@
+
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Clara.ai platform, either a recruiter or a candidate.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user.",
+          "format": "uuid"
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "role": {
+          "type": "string",
+          "description": "User's role (e.g., recruiter, candidate)."
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Reference to the Company the user belongs to. (Relationship: Company 1:N User)"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "firstName",
+        "lastName",
+        "role"
+      ]
+    },
+    "JobOffer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "JobOffer",
+      "type": "object",
+      "description": "Represents a job offer posted by a recruiter.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the job offer.",
+          "format": "uuid"
+        },
+        "recruiterId": {
+          "type": "string",
+          "description": "Reference to the Recruiter who created the job offer. (Relationship: User 1:N JobOffer)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the job offer."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the job offer."
+        },
+        "hardSkills": {
+          "type": "array",
+          "description": "List of required hard skills for the job.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "softSkills": {
+          "type": "array",
+          "description": "List of required soft skills for the job.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "recruiterId",
+        "title",
+        "description"
+      ]
+    },
+    "Application": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Application",
+      "type": "object",
+      "description": "Represents a candidate's application to a job offer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the application.",
+          "format": "uuid"
+        },
+        "candidateId": {
+          "type": "string",
+          "description": "Reference to the Candidate who submitted the application. (Relationship: User 1:N Application)"
+        },
+        "jobOfferId": {
+          "type": "string",
+          "description": "Reference to the JobOffer the application is for. (Relationship: JobOffer 1:N Application)"
+        },
+        "cvUrl": {
+          "type": "string",
+          "description": "URL of the candidate's CV."
+        },
+        "videoInterviewUrl": {
+          "type": "string",
+          "description": "URL of the candidate's video interview."
+        },
+        "iaScore": {
+          "type": "number",
+          "description": "IA matching score for the candidate's application."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the application (e.g., pending, shortlisted, rejected)."
+        }
+      },
+      "required": [
+        "id",
+        "candidateId",
+        "jobOfferId"
+      ]
+    },
+    "Company": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Company",
+      "type": "object",
+      "description": "Represents a company using the Clara.ai platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the company.",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the company."
+        },
+        "primaryColor": {
+          "type": "string",
+          "description": "Primary color of the company's personalized theme."
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL of the company's logo."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "SubscriptionPlan": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SubscriptionPlan",
+      "type": "object",
+      "description": "Represents a subscription plan for companies.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the subscription plan.",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the subscription plan (e.g., Basic, Quarterly)."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the subscription plan in USD."
+        },
+        "durationMonths": {
+          "type": "number",
+          "description": "Duration of the subscription plan in months."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the features included in the subscription."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "price",
+        "durationMonths"
+      ]
+    },
+    "Interview": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Interview",
+      "type": "object",
+      "description": "Represents a pre-recorded video interview configuration for a job offer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the interview.",
+          "format": "uuid"
+        },
+        "jobOfferId": {
+          "type": "string",
+          "description": "Reference to the Job Offer this interview is for."
+        },
+        "jobTitle": {
+          "type": "string",
+          "description": "Denormalized title of the job offer for easy display."
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Identifier for the virtual interviewer's avatar."
+        },
+        "questions": {
+          "type": "array",
+          "description": "List of questions for the interview.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "participantCount": {
+          "type": "number",
+          "description": "Number of candidates who have participated in this interview."
+        },
+        "companyId": {
+          "type": "string",
+          "description": "Reference to the Company this interview belongs to."
+        },
+        "recruiterId": {
+          "type": "string",
+          "description": "Reference to the Recruiter who created the interview."
+        }
+      },
+      "required": [
+        "id",
+        "jobOfferId",
+        "jobTitle",
+        "avatar",
+        "questions",
+        "companyId",
+        "recruiterId"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Path-based ownership enforced by security rules based on request.auth.uid.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/companies/{companyId}",
+        "definition": {
+          "entityName": "Company",
+          "schema": {
+            "$ref": "#/backend/entities/Company"
+          },
+          "description": "Stores company profiles.",
+          "params": [
+            {
+              "name": "companyId",
+              "description": "The unique identifier for the company."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/companies/{companyId}/job_offers/{jobOfferId}",
+        "definition": {
+          "entityName": "JobOffer",
+          "schema": {
+            "$ref": "#/backend/entities/JobOffer"
+          },
+          "description": "Stores job offers for a specific company. Includes denormalized 'companyId' for authorization independence.",
+          "params": [
+            {
+              "name": "companyId",
+              "description": "The unique identifier for the company."
+            },
+            {
+              "name": "jobOfferId",
+              "description": "The unique identifier for the job offer."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/companies/{companyId}/job_offers/{jobOfferId}/applications/{applicationId}",
+        "definition": {
+          "entityName": "Application",
+          "schema": {
+            "$ref": "#/backend/entities/Application"
+          },
+          "description": "Stores applications for a specific job offer.",
+          "params": [
+            {
+              "name": "companyId",
+              "description": "The unique identifier for the company."
+            },
+            {
+              "name": "jobOfferId",
+              "description": "The unique identifier for the job offer."
+            },
+            {
+              "name": "applicationId",
+              "description": "The unique identifier for the application."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/companies/{companyId}/interviews/{interviewId}",
+        "definition": {
+          "entityName": "Interview",
+          "schema": {
+            "$ref": "#/backend/entities/Interview"
+          },
+          "description": "Stores video interview configurations for a specific company.",
+          "params": [
+            {
+              "name": "companyId",
+              "description": "The unique identifier for the company."
+            },
+            {
+              "name": "interviewId",
+              "description": "The unique identifier for the interview."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/subscription_plans/{subscriptionPlanId}",
+        "definition": {
+          "entityName": "SubscriptionPlan",
+          "schema": {
+            "$ref": "#/backend/entities/SubscriptionPlan"
+          },
+          "description": "Stores subscription plans.",
+          "params": [
+            {
+              "name": "subscriptionPlanId",
+              "description": "The unique identifier for the subscription plan."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore structure prioritizes authorization independence and QAPs. User data is segregated under `/users/{userId}`, offering path-based ownership.  Company data and subscription plans are stored in separate top-level collections, `/companies` and `/subscription_plans` respectively, allowing for straightforward security rules. Job Offers and Interviews are nested under the company to reflect the relationship `Company 1:N JobOffer` and `Company 1:N Interview`. Applications are nested under the relevant Job Offer. To ensure authorization independence, the `companyId` is denormalized into the JobOffer and Interview documents to check company access without `get()` calls.\n\nThis design supports required QAPs (Rules are not Filters) by:\n\n1.  Segregating user data into `/users/{userId}` to implement simple read/write rules based on `request.auth.uid`.\n2.  Storing Company data at the top level to easily control access.\n3.  Subscription plans are stored in a separate collection.\n4.  Denormalizing `companyId` from Company into JobOffer and Interview to enable atomic operations and prevent the use of `get()` calls for determining ownership."
+  }
+}
+
+    

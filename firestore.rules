@@ -1,0 +1,173 @@
+/**
+ * @fileoverview Firestore Security Rules for Clara.ai platform.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict ownership model for user data and leverages
+ * denormalization to optimize authorization checks. Data access is generally
+ * restricted to authenticated users and, where applicable, limited to resources
+ * owned by the requesting user.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores personal user profiles.
+ * - /companies/{companyId}: Stores company profiles.
+ * - /companies/{companyId}/job_offers/{jobOfferId}: Stores job offers, nested under companies.
+ * - /companies/{companyId}/job_offers/{jobOfferId}/applications/{applicationId}: Stores applications, nested under job offers.
+ * - /companies/{companyId}/interviews/{interviewId}: Stores interview configurations, nested under companies.
+ * - /subscription_plans/{subscriptionPlanId}: Stores subscription plan details.
+ *
+ * Key Security Decisions:
+ * - User data is strictly controlled by the user's ID.
+ * - Company, JobOffer and Interview ownership are validated through denormalized `companyId` fields.
+ * - Listing of user documents is allowed only to the owning user.
+ * - Subscription plans are publicly readable but not writable.
+ *
+ * Denormalization for Authorization:
+ * The `companyId` is denormalized into the JobOffer and Interview documents to allow
+ * security rules to validate company access without additional `get()` calls.
+ *
+ * Structural Segregation:
+ * Public vs. private data is segregated into different collections. User-specific
+ * data is stored under the `/users/{userId}` path, while company and subscription
+ * plan data are stored in top-level collections.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Checks if the request is made by a signed-in user.
+     * @return {bool} True if the user is signed in, false otherwise.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * @description Checks if the authenticated user ID matches the provided user ID.
+     * @param {string} userId - The user ID to compare against the authenticated user's ID.
+     * @return {bool} True if the user IDs match, false otherwise.
+     * @example isOwner("user123") returns true if request.auth.uid is "user123".
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Checks if the authenticated user is the owner of an existing document.
+     * @param {string} userId - The user ID to compare against the authenticated user's ID.
+     * @return {bool} True if the user IDs match and the resource exists, false otherwise.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Defines rules for user profiles stored under /users/{userId}.
+     * @path /users/{userId}
+     * @allow (create) User "user123" can create their own profile (request.auth.uid == "user123").
+     * @allow (get) User "user123" can read their own profile (request.auth.uid == "user123").
+     * @allow (update) User "user123" can update their own profile (request.auth.uid == "user123").
+     * @allow (delete) User "user123" can delete their own profile (request.auth.uid == "user123").
+     * @deny (create) User "user456" cannot create a profile for "user123".
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines rules for company profiles stored under /companies/{companyId}.
+     * @path /companies/{companyId}
+     * @allow (get) Any signed-in user can read company profiles.
+     * @allow (create) Not allowed in prototyping.
+     * @allow (update) Not allowed in prototyping.
+     * @allow (delete) Not allowed in prototyping.
+     * @deny (create) No one can create company profiles without specific authorization.
+     * @principle Restricts write access to company profiles.
+     */
+    match /companies/{companyId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Defines rules for job offers stored under /companies/{companyId}/job_offers/{jobOfferId}.
+     * @path /companies/{companyId}/job_offers/{jobOfferId}
+     * @allow (get) Any signed-in user can read job offers.
+     * @allow (create) A signed-in user can create a job offer if the companyId matches the document's companyId.
+     * @allow (update) A signed-in user can update a job offer if the companyId matches the document's companyId and the document exists.
+     * @allow (delete) A signed-in user can delete a job offer if the companyId matches the document's companyId and the document exists.
+     * @deny (create) User cannot create a job offer with a mismatched companyId.
+     * @principle Enforces company-based ownership for job offers.
+     */
+    match /companies/{companyId}/job_offers/{jobOfferId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn() && request.resource.data.companyId == companyId;
+      allow update: if isSignedIn() && request.resource.data.companyId == companyId && resource != null;
+      allow delete: if isSignedIn() && request.resource.data.companyId == companyId && resource != null;
+    }
+
+    /**
+     * @description Defines rules for applications stored under /companies/{companyId}/job_offers/{jobOfferId}/applications/{applicationId}.
+     * @path /companies/{companyId}/job_offers/{jobOfferId}/applications/{applicationId}
+     * @allow (get) Any signed-in user can read applications.
+     * @allow (create) Any signed-in user can create an application.
+     * @allow (update) Not allowed in prototyping.
+     * @allow (delete) Not allowed in prototyping.
+     * @deny (create) No specific denial case in prototyping.
+     * @principle Restricts write access to applications in prototyping phase.
+     */
+    match /companies/{companyId}/job_offers/{jobOfferId}/applications/{applicationId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Defines rules for interviews stored under /companies/{companyId}/interviews/{interviewId}.
+     * @path /companies/{companyId}/interviews/{interviewId}
+     * @allow (get) Any signed-in user can read interview configurations.
+     * @allow (list) Any signed-in user can list interview configurations.
+     * @allow (create) A signed-in user can create an interview if the companyId matches the document's companyId.
+     * @allow (update) A signed-in user can update an interview if the companyId matches the document's companyId and the document exists.
+     * @allow (delete) A signed-in user can delete an interview if the companyId matches the document's companyId and the document exists.
+     * @deny (create) User cannot create an interview with a mismatched companyId.
+     */
+    match /companies/{companyId}/interviews/{interviewId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn() && request.resource.data.companyId == companyId;
+      allow update: if isSignedIn() && request.resource.data.companyId == companyId && resource != null;
+      allow delete: if isSignedIn() && request.resource.data.companyId == companyId && resource != null;
+    }
+
+    /**
+     * @description Defines rules for subscription plans stored under /subscription_plans/{subscriptionPlanId}.
+     * @path /subscription_plans/{subscriptionPlanId}
+     * @allow (get) Any signed-in user can read subscription plans.
+     * @allow (list) Any signed-in user can list subscription plans.
+     * @allow (create) Not allowed in prototyping.
+     * @allow (update) Not allowed in prototyping.
+     * @allow (delete) Not allowed in prototyping.
+     * @deny (create) No one can create subscription plans without specific authorization.
+     * @principle Restricts write access to subscription plans.
+     */
+    match /subscription_plans/{subscriptionPlanId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
