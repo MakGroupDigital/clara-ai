@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,7 +12,8 @@ import Link from "next/link";
 import { useEffect, useState, useRef, useMemo } from "react";
 import type { Job, Candidate, CandidateStatus } from "@/lib/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import QRCode from "qrcode.react";
+// Si vous utilisez 'qrcode.react', assurez-vous qu'il est bien compatible avec les Client Components
+import QRCode from "qrcode.react"; 
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -22,7 +22,17 @@ import { doc } from "firebase/firestore";
 
 type StatusFilter = CandidateStatus | 'all';
 
-export default function JobDetailsPage({ params }: { params: { jobId: string } }) {
+// =================================================================
+// 🌟 CORRECTION APPLIQUÉE ICI : Utilisation d'une interface explicite
+// =================================================================
+interface JobDetailsPageProps {
+    params: {
+        jobId: string;
+    };
+    // Vous pouvez aussi ajouter searchParams ici si besoin, mais pour le moment, concentrons-nous sur params.
+}
+
+export default function JobDetailsPage({ params }: JobDetailsPageProps) {
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [jobUrl, setJobUrl] = useState('');
     const qrCodeRef = useRef<HTMLDivElement>(null);
@@ -105,7 +115,8 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
                     link.href = canvas.toDataURL("image/png");
                     link.click();
                 };
-                img.src = "data:image/svg+xml;base64," + btoa(svgData);
+                // Petite astuce pour s'assurer que l'image est bien encodée
+                img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
             }
         }
     };
@@ -152,7 +163,7 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
                         <Share2 className="mr-2 h-4 w-4"/>
                         {t('share')}
                     </Button>
-                     <Dialog>
+                      <Dialog>
                         <DialogTrigger asChild>
                             <Button variant="outline" className="flex-1">
                                 <QrCode className="mr-2 h-4 w-4"/>
@@ -227,16 +238,16 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
                                                 <div className="flex flex-col sm:hidden">
                                                     <span className="font-medium">{candidate.name}</span>
                                                     <Badge variant={
-                                                        candidate.status === 'Présélectionné' ? 'default' : 
-                                                        candidate.status === 'Rejeté' ? 'destructive' : 'secondary'
-                                                    }
-                                                    className={cn(
-                                                        'text-xs w-fit mt-1',
-                                                        candidate.status === 'Présélectionné' && 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-                                                        candidate.status === 'Rejeté' && 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-                                                        candidate.status === 'En attente' && 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-                                                    )}
-                                                    >{getTranslatedStatus(candidate.status)}</Badge>
+                                                         candidate.status === 'Présélectionné' ? 'default' : 
+                                                         candidate.status === 'Rejeté' ? 'destructive' : 'secondary'
+                                                     }
+                                                     className={cn(
+                                                         'text-xs w-fit mt-1',
+                                                         candidate.status === 'Présélectionné' && 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                                         candidate.status === 'Rejeté' && 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+                                                         candidate.status === 'En attente' && 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+                                                     )}
+                                                     >{getTranslatedStatus(candidate.status)}</Badge>
                                                 </div>
                                                 <span className="font-medium hidden sm:inline">{candidate.name}</span>
                                             </div>
@@ -275,5 +286,3 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
         </div>
     )
 }
-
-    
