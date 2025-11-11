@@ -1,8 +1,14 @@
-import type {NextConfig} from 'next';
+// next.config.js
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
+  
+  // 🎯 LIGNE AJOUTÉE POUR CONTOURNER L'ERREUR DART SASS
+  sassOptions: {}, 
+  // ---------------------------------------------------
+
   images: {
     remotePatterns: [
       {
