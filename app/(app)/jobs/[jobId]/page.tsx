@@ -10,10 +10,10 @@ import { candidates as allCandidates } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, Filter, Share2, QrCode, Download, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, use } from "react";
 import type { Job, Candidate, CandidateStatus } from "@/lib/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import QRCode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -22,7 +22,8 @@ import { doc } from "firebase/firestore";
 
 type StatusFilter = CandidateStatus | 'all';
 
-export default function JobDetailsPage({ params }: { params: { jobId: string } }) {
+export default function JobDetailsPage({ params }: { params: Promise<{ jobId: string }> }) {
+    const resolvedParams = use(params);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [jobUrl, setJobUrl] = useState('');
     const qrCodeRef = useRef<HTMLDivElement>(null);
@@ -36,8 +37,8 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
 
     const jobDocRef = useMemoFirebase(() => {
         if (!firestore || !companyId) return null;
-        return doc(firestore, `companies/${companyId}/job_offers/${params.jobId}`);
-    }, [firestore, companyId, params.jobId]);
+        return doc(firestore, `companies/${companyId}/job_offers/${resolvedParams.jobId}`);
+    }, [firestore, companyId, resolvedParams.jobId]);
 
     const { data: job, isLoading } = useDoc<Job>(jobDocRef);
 
@@ -51,9 +52,9 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
         
         if (typeof window !== 'undefined') {
             // Construct the public URL for the job offer, not the dashboard URL
-            setJobUrl(`${window.location.origin}/apply/${params.jobId}`);
+            setJobUrl(`${window.location.origin}/apply/${resolvedParams.jobId}`);
         }
-    }, [job, params.jobId]);
+    }, [job, resolvedParams.jobId]);
 
     const filteredCandidates = useMemo(() => {
         if (statusFilter === 'all') {
@@ -67,7 +68,7 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
             try {
                 await navigator.share({
                     title: job?.title,
-                    text: t('share_job_text', { title: job?.title }),
+                    text: t('share_job_text', { title: job?.title || '' }),
                     url: jobUrl,
                 });
             } catch (error) {
@@ -164,7 +165,7 @@ export default function JobDetailsPage({ params }: { params: { jobId: string } }
                                 <DialogTitle>{t('share_job_offer')}</DialogTitle>
                             </DialogHeader>
                             <div className="flex flex-col items-center justify-center p-4 gap-4" ref={qrCodeRef}>
-                                <QRCode value={jobUrl} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+                                <QRCodeSVG value={jobUrl} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
                                 <p className="text-sm text-muted-foreground text-center">{t('scan_qr_code_prompt')}</p>
                             </div>
                             <DialogFooter>

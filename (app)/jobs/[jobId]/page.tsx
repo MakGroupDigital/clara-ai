@@ -13,7 +13,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import type { Job, Candidate, CandidateStatus } from "@/lib/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 // Si vous utilisez 'qrcode.react', assurez-vous qu'il est bien compatible avec les Client Components
-import QRCode from "qrcode.react"; 
+import { QRCodeSVG } from "qrcode.react"; 
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/use-translation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -77,7 +77,7 @@ export default function JobDetailsPage({ params }: JobDetailsPageProps) {
             try {
                 await navigator.share({
                     title: job?.title,
-                    text: t('share_job_text', { title: job?.title }),
+                    text: t('share_job_text', { title: job?.title || '' }),
                     url: jobUrl,
                 });
             } catch (error) {
@@ -175,7 +175,7 @@ export default function JobDetailsPage({ params }: JobDetailsPageProps) {
                                 <DialogTitle>{t('share_job_offer')}</DialogTitle>
                             </DialogHeader>
                             <div className="flex flex-col items-center justify-center p-4 gap-4" ref={qrCodeRef}>
-                                <QRCode value={jobUrl} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+                                <QRCodeSVG value={jobUrl} size={256} style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
                                 <p className="text-sm text-muted-foreground text-center">{t('scan_qr_code_prompt')}</p>
                             </div>
                             <DialogFooter>
