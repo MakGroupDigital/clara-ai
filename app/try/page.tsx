@@ -71,14 +71,14 @@ export default function PricingPage() {
     ]
 
     return (
-        <div className="min-h-screen bg-background text-foreground p-4 sm:p-8 flex flex-col items-center justify-center bg-grid-pattern">
-             <div className="absolute top-8 left-8">
+        <div className="min-h-screen bg-background text-foreground p-4 sm:p-8 flex flex-col items-center bg-grid-pattern">
+             <div className="absolute top-8 left-8 z-50">
                 <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
                     <ArrowLeft className="h-4 w-4" />
                     Retour à l'accueil
                 </Link>
             </div>
-            <div className="max-w-7xl w-full flex flex-col items-center">
+            <div className="max-w-7xl w-full flex flex-col items-center pt-20 sm:pt-24">
                  <AnimatedOnScroll animation="slide-in-from-bottom" className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-headline text-center mb-4 text-primary">Une tarification simple et transparente</h1>
                     <p className="text-muted-foreground max-w-3xl mx-auto text-lg">Choisissez le plan qui évolue avec les ambitions de votre entreprise.</p>
