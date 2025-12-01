@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "cp -r public .next/standalone/public 2>/dev/null || cp -r public .next/public 2>/dev/null || true"
   },
   "dependencies": {
     "@genkit-ai/ai": "^1.24.0",

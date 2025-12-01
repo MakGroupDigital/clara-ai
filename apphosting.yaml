@@ -19,3 +19,6 @@ runConfig:
   secrets:
     - secret: RESEND_API_KEY
     - secret: GITHUB_TOKEN
+  # Build configuration
+  buildCommand: npm run build
+  runCommand: npm start

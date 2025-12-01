@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 
 // Important: La clé API est lue depuis les variables d'environnement
 // pour des raisons de sécurité.
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: Request) {
   try {
@@ -27,6 +27,10 @@ export async function POST(request: Request) {
     }
 
     // Logique pour envoyer l'email avec Resend
+    if (!resend) {
+      return NextResponse.json({ message: 'Service email non configuré' }, { status: 503 });
+    }
+    
     await resend.emails.send({
       from: 'onboarding@resend.dev', // Doit être un domaine vérifié sur Resend
       to: 'contact.makgroup.digital@gmail.com',
