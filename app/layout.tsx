@@ -6,6 +6,7 @@ import { LanguageProvider } from '@/contexts/language-context';
 import { AssistanceChat } from '@/components/assistance-chat';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { PWAInstall } from './pwa-install';
+import { LoadingScreen } from '@/components/loading-screen';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className="dark">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
@@ -51,6 +53,7 @@ export default function RootLayout({
         <title>Clara.ai - L'assistante RH moderne</title>
       </head>
       <body className={cn('font-body antialiased min-h-screen bg-background text-foreground')}>
+        <LoadingScreen />
         <Suspense fallback={<div>Chargement de l'application...</div>}>
           <FirebaseClientProvider>
             <LanguageProvider>

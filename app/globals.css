@@ -7,6 +7,31 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Empêcher le zoom automatique sur mobile */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  font-size: 16px !important;
+}
+
+/* Améliorer le responsive */
+@media (max-width: 640px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  input, textarea, select {
+    font-size: 16px !important;
+    transform: scale(1);
+  }
+}
+
 .bg-grid-pattern {
     background-image:
         linear-gradient(to right, hsl(var(--primary) / 0.1) 1px, transparent 1px),

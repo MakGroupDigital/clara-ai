@@ -55,14 +55,13 @@ export default function RequestAccessPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground p-4 sm:p-8 flex flex-col items-center justify-center bg-grid-pattern">
-            <div className="absolute top-8 left-8">
-                <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-                    <ArrowLeft className="h-4 w-4" />
-                    Retour à l'accueil
+            <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-50">
+                <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:bg-background/90 transition-all">
+                    <ArrowLeft className="h-5 w-5" />
                 </Link>
             </div>
 
-            <Card className="w-full max-w-2xl bg-card/80 border-primary/20 shadow-glow-primary-sm">
+            <Card className="w-full max-w-2xl bg-card/80 border-primary/20 shadow-glow-primary-sm mt-16 sm:mt-0">
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl">Demander un accès à <span className="text-accent">Clara</span><span className="text-primary">.ai</span></CardTitle>
                     <CardDescription>

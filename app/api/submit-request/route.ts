@@ -4,7 +4,8 @@ import { Resend } from 'resend';
 
 // Important: La clé API est lue depuis les variables d'environnement
 // pour des raisons de sécurité.
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_QyQ7cScZ_L7xePczkYQ6GGe3s6Pjzq2SN';
+const resend = new Resend(RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -27,13 +28,9 @@ export async function POST(request: Request) {
     }
 
     // Logique pour envoyer l'email avec Resend
-    if (!resend) {
-      return NextResponse.json({ message: 'Service email non configuré' }, { status: 503 });
-    }
-    
     await resend.emails.send({
       from: 'onboarding@resend.dev', // Doit être un domaine vérifié sur Resend
-      to: 'contact.makgroup.digital@gmail.com',
+      to: 'infos@ybs-innovate.com',
       subject: `Nouvelle demande d'accès pour Clara.ai de ${companyName}`,
       html: `
         <h1>Nouvelle demande d'accès à Clara.ai</h1>
