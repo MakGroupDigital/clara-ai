@@ -142,6 +142,9 @@ export default function LandingPage() {
         <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-center relative overflow-hidden bg-grid-pattern">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
             <AnimatedOnScroll animation="fade-in" className="z-10 flex flex-col items-center gap-6 max-w-4xl px-4">
+                <div className="mb-8">
+                    <Logo className="scale-150" />
+                </div>
                 <h1 className="text-4xl md:text-7xl font-headline font-bold">
                     Le Recrutement, <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Réinventé par l'IA.</span>
                 </h1>
