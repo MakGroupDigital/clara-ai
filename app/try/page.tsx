@@ -72,10 +72,9 @@ export default function PricingPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground p-4 sm:p-8 flex flex-col items-center bg-grid-pattern">
-             <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-50 bg-background/80 backdrop-blur-sm px-3 py-2 rounded-md">
-                <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                    <ArrowLeft className="h-4 w-4" />
-                    Retour à l'accueil
+             <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-50">
+                <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:bg-background/90 transition-all">
+                    <ArrowLeft className="h-5 w-5" />
                 </Link>
             </div>
             <div className="max-w-7xl w-full flex flex-col items-center pt-28 sm:pt-32 md:pt-36">
