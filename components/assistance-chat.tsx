@@ -10,8 +10,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MessageCircleQuestion, Send, Bot, User, Loader } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
-import { askClara } from '@/ai/flows/assistance-flow';
-
 type Message = {
     role: 'user' | 'assistant';
     content: string;
@@ -28,16 +26,36 @@ export function AssistanceChat() {
         if (!input.trim()) return;
 
         const userMessage: Message = { role: 'user', content: input };
+        const currentInput = input;
         setMessages(prev => [...prev, userMessage]);
         setInput('');
         setIsLoading(true);
 
         try {
-            const result = await askClara({ question: input });
-            const assistantMessage: Message = { role: 'assistant', content: result.answer };
+            const response = await fetch('/api/assistance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: currentInput }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Erreur lors de la réception de la réponse');
+            }
+
+            const result = await response.json();
+            const assistantMessage: Message = { 
+                role: 'assistant', 
+                content: result.answer || result.error || 'Désolé, une erreur est survenue.' 
+            };
             setMessages(prev => [...prev, assistantMessage]);
-        } catch (error) {
-            const errorMessage: Message = { role: 'assistant', content: t('error_toast_title') };
+        } catch (error: any) {
+            console.error('Erreur lors de l\'envoi du message:', error);
+            const errorMessage: Message = { 
+                role: 'assistant', 
+                content: error.message || t('error_toast_title') || 'Désolé, une erreur est survenue. Veuillez réessayer.' 
+            };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);

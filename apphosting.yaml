@@ -19,6 +19,7 @@ runConfig:
   secrets:
     - secret: RESEND_API_KEY
     - secret: GITHUB_TOKEN
+    - secret: GEMINI_API_KEY
   # Build configuration
   buildCommand: npm run build
   runCommand: npm start
