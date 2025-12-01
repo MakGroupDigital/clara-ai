@@ -52,14 +52,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="16x16" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="96x96" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="192x192" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="256x256" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="512x512" />
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico?t=1" sizes="any" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="96x96" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="256x256" />
+        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="512x512" />
+        <link rel="shortcut icon" href="/favicon.ico?t=1" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/icon.png" sizes="57x57" />
         <link rel="apple-touch-icon" href="/icon.png" sizes="60x60" />
         <link rel="apple-touch-icon" href="/icon.png" sizes="72x72" />
