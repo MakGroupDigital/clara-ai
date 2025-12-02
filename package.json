@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postbuild": "cp -r public .next/standalone/public 2>/dev/null || cp -r public .next/public 2>/dev/null || true",
-    "pwa:analyze": "pwa-builder https://clara.ai",
+    "pwa:analyze": "pwa-builder https://rh.claraai.site",
     "pwa:android": "pwa-builder build --platform android",
     "pwa:windows": "pwa-builder build --platform windows",
     "pwa:all": "pwa-builder build --platform all"

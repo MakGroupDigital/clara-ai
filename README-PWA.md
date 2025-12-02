@@ -4,7 +4,7 @@
 
 1. **Déployer l'application** sur Firebase (ou votre hébergement HTTPS)
 2. **Aller sur** https://www.pwabuilder.com/
-3. **Entrer l'URL** : `https://clara.ai`
+3. **Entrer l'URL** : `https://rh.claraai.site`
 4. **Cliquer sur "Start"**
 5. **Sélectionner "Android"**
 6. **Télécharger l'APK** généré
@@ -21,7 +21,7 @@
 1. **Initialiser le projet Android** :
 ```bash
 npx @bubblewrap/cli init \
-    --manifest=https://clara.ai/manifest.json \
+    --manifest=https://rh.claraai.site/manifest.json \
     --directory=android-app \
     --package-name=com.ybsinnovate.claraai \
     --app-version-name=1.0.0 \

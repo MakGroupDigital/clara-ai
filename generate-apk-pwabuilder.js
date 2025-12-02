@@ -9,7 +9,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const APP_URL = 'https://clara.ai';
+const APP_URL = 'https://rh.claraai.site';
 const OUTPUT_DIR = path.join(__dirname, 'platforms', 'android');
 
 console.log('🚀 Génération de l\'APK Android via PWABuilder');

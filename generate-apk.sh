@@ -7,7 +7,7 @@ echo "🚀 Génération de l'APK Android pour Clara.ai"
 echo ""
 
 # Vérifier que l'app est accessible
-APP_URL="https://clara.ai"
+APP_URL="https://rh.claraai.site"
 echo "📱 URL de l'application: $APP_URL"
 echo ""
 
@@ -24,7 +24,7 @@ echo ""
 
 # Utiliser Bubblewrap pour créer le projet Android
 npx @bubblewrap/cli init \
-    --manifest="$APP_URL/manifest.json" \
+    --manifest="$APP_URL/manifest.webmanifest" \
     --directory="$ANDROID_DIR" \
     --package-name="com.ybsinnovate.claraai" \
     --app-version-name="1.0.0" \
