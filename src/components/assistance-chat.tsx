@@ -40,11 +40,18 @@ export function AssistanceChat() {
                 body: JSON.stringify({ question: currentInput }),
             });
 
+            const result = await response.json();
+            
+            // Même si response.ok est false, on peut avoir un message d'erreur utile
             if (!response.ok) {
-                throw new Error('Erreur lors de la réception de la réponse');
+                const errorMessage: Message = { 
+                    role: 'assistant', 
+                    content: result.answer || result.error || 'Désolé, une erreur est survenue. Veuillez réessayer plus tard.' 
+                };
+                setMessages(prev => [...prev, errorMessage]);
+                return;
             }
 
-            const result = await response.json();
             const assistantMessage: Message = { 
                 role: 'assistant', 
                 content: result.answer || result.error || 'Désolé, une erreur est survenue.' 

@@ -1,36 +1,22 @@
 
 'use server';
 /**
- * @fileOverview A general assistance chatbot flow.
+ * @fileOverview A general assistance chatbot flow using DeepSeek API.
  *
  * - askClara - A function that takes a user's question and returns an answer.
  * - AskClaraInput - The input type for the askClara function.
  * - AskClaraOutput - The return type for the askClara function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+export type AskClaraInput = {
+  question: string;
+};
 
-const AskClaraInputSchema = z.object({
-  question: z.string().describe('The question from the user.'),
-});
-export type AskClaraInput = z.infer<typeof AskClaraInputSchema>;
+export type AskClaraOutput = {
+  answer: string;
+};
 
-const AskClaraOutputSchema = z.object({
-  answer: z.string().describe("The AI's answer to the question."),
-});
-export type AskClaraOutput = z.infer<typeof AskClaraOutputSchema>;
-
-export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
-  return askClaraFlow(input);
-}
-
-const prompt = ai.definePrompt({
-  name: 'askClaraPrompt',
-  input: {schema: AskClaraInputSchema},
-  output: {schema: AskClaraOutputSchema},
-  prompt: `
-# PROMPT SYSTÈME DÉTAILLÉ FINAL ET CORRIGÉ POUR CLARA.AI
+const SYSTEM_PROMPT = `# PROMPT SYSTÈME DÉTAILLÉ FINAL ET CORRIGÉ POUR CLARA.AI
 
 ## 1. IDENTITÉ ET RÔLE FONDAMENTAL (Persona & Contexte Produit)
 - **Nom du Modèle** : Clara.AI
@@ -49,8 +35,8 @@ Vous devez intégrer le fonctionnement du produit dans vos conseils RH, en le pr
     1.  **Analyse et tri intelligent des CV** : Traitement ultra-rapide des CV avec filtrage par mots-clés, analyse contextuelle (NLP) et détection d'incohérences.
     2.  **Entretien automatisé et interactif** : Interviews vidéo en direct ou préenregistrées avec des questions dynamiques qui s'adaptent aux réponses du candidat.
     3.  **Analyse neurocognitive et comportementale** : Étude des micro-expressions faciales, mouvements oculaires et interprétation des variations émotionnelles pour un profil psychométrique complet.
-    4.  **Scoring cognitif et émotionnel** : Système de notation intelligent (0–100) basé sur la cohérence, la confiance et l’adéquation poste/profil, qui s'affine à chaque entretien.
-    5.  **Matching prédictif avancé** : Algorithmes d’IA prédictive croisant les données pour détecter la compatibilité culturelle et professionnelle et recommander des talents.
+    4.  **Scoring cognitif et émotionnel** : Système de notation intelligent (0–100) basé sur la cohérence, la confiance et l'adéquation poste/profil, qui s'affine à chaque entretien.
+    5.  **Matching prédictif avancé** : Algorithmes d'IA prédictive croisant les données pour détecter la compatibilité culturelle et professionnelle et recommander des talents.
     6.  **Tableau de bord RH intelligent** : Vue centralisée des statistiques de recrutement en temps réel avec exportation de rapports (PDF, Excel, API).
     7.  **Apprentissage continu (LLM)** : Clara.ai apprend de chaque recrutement et intègre un moteur LLM multilingue africain (Lingala, Swahili, etc.).
     8.  **Sécurité et Éthique** : Chiffrement complet, conformité RGPD, et le principe fondamental que la décision finale reste humaine.
@@ -79,22 +65,51 @@ Vous avez accès à des ressources d'information dynamiques externes pour fourni
 
 ## 4. TON ET STYLE
 - **Ton** : Professionnel, Autoritaire, Factuel et Centré sur la solution.
-- **Format** : Réponse structurée (listes, titres) pour faciliter la prise de décision immédiate.
+- **Format** : Réponse structurée (listes, titres) pour faciliter la prise de décision immédiate.`;
 
----
-**Question de l'utilisateur à traiter :**
-{{{question}}}
-`,
-});
-
-const askClaraFlow = ai.defineFlow(
-  {
-    name: 'askClaraFlow',
-    inputSchema: AskClaraInputSchema,
-    outputSchema: AskClaraOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('DEEPSEEK_API_KEY is not configured');
   }
-);
+
+  try {
+    const response = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          {
+            role: 'system',
+            content: SYSTEM_PROMPT,
+          },
+          {
+            role: 'user',
+            content: input.question,
+          },
+        ],
+        stream: false,
+        temperature: 0.7,
+        max_tokens: 2000,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error?.message || `API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const answer = data.choices?.[0]?.message?.content || 'Désolé, je n\'ai pas pu générer de réponse.';
+
+    return { answer };
+  } catch (error: any) {
+    console.error('Erreur DeepSeek API:', error);
+    throw error;
+  }
+}

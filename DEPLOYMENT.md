@@ -1,55 +1,55 @@
-# Guide de Déploiement - Configuration des Secrets
+# Guide de Déploiement - Clara.ai
 
-## Configuration de la Clé API Gemini pour la Production
+## Configuration des Secrets pour la Production
 
-Pour que le chatbot fonctionne en production, vous devez configurer le secret `GEMINI_API_KEY` dans Google Cloud Secret Manager.
+### 1. DeepSeek API Key
 
-### ⚠️ IMPORTANT : Le chatbot ne fonctionnera PAS en production tant que cette étape n'est pas complétée
+Pour que l'assistant IA fonctionne en production, vous devez configurer la clé API DeepSeek dans Google Cloud Secret Manager.
 
-### Étapes à suivre :
+#### Étapes :
 
-1. **Accéder à Google Cloud Console**
+1. **Obtenir une clé API DeepSeek** :
+   - Visitez : https://platform.deepseek.com/api_keys
+   - Créez une nouvelle clé API
+
+2. **Créer le secret dans Google Cloud Secret Manager** :
+   ```bash
+   gcloud secrets create DEEPSEEK_API_KEY \
+     --data-file=- \
+     --project=studio-6437691961-3752d \
+     --replication-policy="automatic"
+   ```
+   (Collez votre clé API quand demandé, puis appuyez sur Ctrl+D)
+
+   Ou via la console web :
    - Allez sur : https://console.cloud.google.com/security/secret-manager
-   - Sélectionnez le projet Firebase : `studio-6437691961-3752d`
+   - Cliquez sur "CRÉER UN SECRET"
+   - Nom : `DEEPSEEK_API_KEY`
+   - Valeur : Votre clé API DeepSeek
+   - Projet : `studio-6437691961-3752d`
 
-2. **Créer le secret GEMINI_API_KEY**
-   - Cliquez sur "Créer un secret" (ou "Create Secret")
-   - **Nom du secret** : `GEMINI_API_KEY` (exactement ce nom, en majuscules, sans espaces)
-   - **Valeur du secret** : `AIzaSyDBKZTQwYwESmmaPQaufAQbfpAowjPAKFU`
-   - Cliquez sur "Créer le secret" (ou "Create Secret")
-
-3. **Vérifier les autres secrets**
-   Assurez-vous que ces secrets existent également :
-   - `RESEND_API_KEY` (pour l'envoi d'emails)
-   - `GITHUB_TOKEN` (pour le déploiement)
-   - `GEMINI_API_KEY` (pour le chatbot) ⚠️ **À CRÉER**
-
-4. **Vérifier la configuration**
-   Le fichier `apphosting.yaml` doit contenir :
+3. **Vérifier que le secret est référencé dans `apphosting.yaml`** :
    ```yaml
    secrets:
      - secret: RESEND_API_KEY
      - secret: GITHUB_TOKEN
-     - secret: GEMINI_API_KEY
+     - secret: DEEPSEEK_API_KEY
    ```
-   ✅ Cette configuration est déjà en place dans le code
 
-5. **Redéployer l'application**
-   - Firebase App Hosting détectera automatiquement le nouveau secret
-   - Ou déclenchez un nouveau déploiement depuis GitHub
-   - Le secret sera automatiquement injecté comme variable d'environnement `GEMINI_API_KEY`
+### 2. Configuration Locale
 
-### Vérification
+Pour le développement local, créez un fichier `.env.local` :
 
-Une fois le secret créé, le chatbot devrait fonctionner en production. Si ce n'est pas le cas :
-- Vérifiez les logs de déploiement dans Firebase Console
-- Vérifiez que le nom du secret est exactement `GEMINI_API_KEY` (sensible à la casse)
-- Vérifiez que la valeur du secret est correcte
-- Vérifiez que le secret est bien dans le projet `studio-6437691961-3752d`
-- Attendez quelques minutes après la création du secret pour qu'il soit disponible
+```env
+DEEPSEEK_API_KEY=votre_clé_api_ici
+RESEND_API_KEY=re_QyQ7cScZ_L7xePczkYQ6GGe3s6Pjzq2SN
+```
 
-### Note importante
+⚠️ **Important** : Ne commitez jamais `.env.local` dans Git (il est déjà dans `.gitignore`).
 
-- En **local** : La clé API est dans `.env.local` (fonctionne ✅)
-- En **production** : La clé API doit être dans Google Cloud Secret Manager (à créer ⚠️)
+### 3. Vérification
 
+Après le déploiement, testez l'assistant IA via le bouton flottant sur le site. Si vous voyez une erreur de configuration, vérifiez que :
+- Le secret `DEEPSEEK_API_KEY` existe dans Google Cloud Secret Manager
+- Le secret est bien référencé dans `apphosting.yaml`
+- Le projet Firebase est correctement configuré
