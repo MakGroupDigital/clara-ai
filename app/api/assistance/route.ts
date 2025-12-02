@@ -14,12 +14,18 @@ export async function POST(request: Request) {
     }
 
     // Vérifier si la clé API est configurée
-    if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+    if (!apiKey) {
       console.error('Clé API Google (Gemini) non configurée');
+      console.error('Variables d\'environnement disponibles:', {
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY ? '***' : 'undefined',
+        GOOGLE_API_KEY: process.env.GOOGLE_API_KEY ? '***' : 'undefined',
+        NODE_ENV: process.env.NODE_ENV,
+      });
       return NextResponse.json(
         { 
           error: 'Configuration manquante',
-          answer: 'Le service d\'assistance nécessite une configuration API. Veuillez contacter l\'administrateur.'
+          answer: 'Le service d\'assistance nécessite une configuration API. Veuillez vérifier que le secret GEMINI_API_KEY est configuré dans Google Cloud Secret Manager pour la production.'
         },
         { status: 503 }
       );

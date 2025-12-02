@@ -67,66 +67,72 @@ export function AssistanceChat() {
             <SheetTrigger asChild>
                 <Button
                     variant="default"
-                    className="fixed bottom-8 right-8 rounded-full h-16 w-16"
+                    className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 rounded-full h-14 w-14 sm:h-16 sm:w-16 z-50 shadow-lg"
                 >
-                    <MessageCircleQuestion size={32} />
+                    <MessageCircleQuestion className="h-6 w-6 sm:h-8 sm:w-8" />
                     <span className="sr-only">{t('assistance')}</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="bottom" className="h-[75vh] flex flex-col">
-                <SheetHeader>
-                    <SheetTitle className="font-headline">
+            <SheetContent side="bottom" className="h-[85vh] sm:h-[75vh] flex flex-col p-0 gap-0">
+                <SheetHeader className="px-4 pt-4 pb-2 border-b">
+                    <SheetTitle className="font-headline text-lg sm:text-xl">
                         <span className="text-accent">Clara</span><span className="text-primary">.ai</span>
                     </SheetTitle>
-                    <SheetDescription>
+                    <SheetDescription className="text-xs sm:text-sm">
                         <span className="text-accent">Clara</span><span className="text-primary">.ai</span> modèle LLM expert en ressources humaines
                     </SheetDescription>
                 </SheetHeader>
-                <ScrollArea className="flex-1 p-4 pr-6 -mx-6">
-                    <div className="space-y-6">
+                <ScrollArea className="flex-1 p-4">
+                    <div className="space-y-4 sm:space-y-6">
+                        {messages.length === 0 && (
+                            <div className="text-center text-muted-foreground text-sm py-8">
+                                Posez votre question à Clara.ai
+                            </div>
+                        )}
                         {messages.map((message, index) => (
-                            <div key={index} className={cn("flex items-start gap-4", message.role === 'user' ? 'justify-end' : '')}>
+                            <div key={index} className={cn("flex items-start gap-2 sm:gap-4", message.role === 'user' ? 'justify-end' : '')}>
                                 {message.role === 'assistant' && (
-                                    <Avatar className="h-8 w-8 border-2 border-primary/50">
-                                        <AvatarFallback><Bot /></AvatarFallback>
+                                    <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border-2 border-primary/50 flex-shrink-0">
+                                        <AvatarFallback><Bot className="h-4 w-4 sm:h-5 sm:w-5" /></AvatarFallback>
                                     </Avatar>
                                 )}
                                 <div className={cn(
-                                    "rounded-lg p-3 max-w-[75%]",
+                                    "rounded-lg p-3 max-w-[85%] sm:max-w-[75%] break-words",
                                     message.role === 'user'
                                         ? 'bg-primary text-primary-foreground'
                                         : 'bg-muted'
                                 )}>
-                                    <p className="text-sm">{message.content}</p>
+                                    <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
                                 </div>
                                 {message.role === 'user' && (
-                                     <Avatar className="h-8 w-8 border-2 border-muted-foreground/50">
-                                        <AvatarFallback><User /></AvatarFallback>
+                                     <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border-2 border-muted-foreground/50 flex-shrink-0">
+                                        <AvatarFallback><User className="h-4 w-4 sm:h-5 sm:w-5" /></AvatarFallback>
                                     </Avatar>
                                 )}
                             </div>
                         ))}
                          {isLoading && (
-                            <div className="flex items-start gap-4">
-                                <Avatar className="h-8 w-8 border-2 border-primary/50">
-                                    <AvatarFallback><Bot /></AvatarFallback>
+                            <div className="flex items-start gap-2 sm:gap-4">
+                                <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border-2 border-primary/50 flex-shrink-0">
+                                    <AvatarFallback><Bot className="h-4 w-4 sm:h-5 sm:w-5" /></AvatarFallback>
                                 </Avatar>
                                 <div className="rounded-lg p-3 bg-muted flex items-center">
-                                    <Loader className="h-5 w-5 animate-spin text-primary"/>
+                                    <Loader className="h-4 w-4 sm:h-5 sm:w-5 animate-spin text-primary"/>
                                 </div>
                             </div>
                         )}
                     </div>
                 </ScrollArea>
-                <div className="flex gap-2 p-4 -m-6 border-t bg-background">
+                <div className="flex gap-2 p-3 sm:p-4 border-t bg-background">
                     <Input
                         placeholder={t('type_your_message')}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                         disabled={isLoading}
+                        className="text-sm sm:text-base flex-1"
                     />
-                    <Button onClick={handleSend} disabled={isLoading}>
+                    <Button onClick={handleSend} disabled={isLoading} size="icon" className="h-10 w-10 sm:h-11 sm:w-11">
                         <Send className="h-4 w-4" />
                     </Button>
                 </div>
