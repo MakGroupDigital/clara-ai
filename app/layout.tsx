@@ -15,25 +15,6 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.png', sizes: '16x16', type: 'image/png' },
-      { url: '/icon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon.png', sizes: '96x96', type: 'image/png' },
-      { url: '/icon.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon.png', sizes: '256x256', type: 'image/png' },
-      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/icon.png', sizes: '57x57', type: 'image/png' },
-      { url: '/icon.png', sizes: '60x60', type: 'image/png' },
-      { url: '/icon.png', sizes: '72x72', type: 'image/png' },
-      { url: '/icon.png', sizes: '76x76', type: 'image/png' },
-      { url: '/icon.png', sizes: '114x114', type: 'image/png' },
-      { url: '/icon.png', sizes: '120x120', type: 'image/png' },
-      { url: '/icon.png', sizes: '144x144', type: 'image/png' },
-      { url: '/icon.png', sizes: '152x152', type: 'image/png' },
-      { url: '/icon.png', sizes: '180x180', type: 'image/png' },
-      { url: '/icon.png', sizes: '256x256', type: 'image/png' },
-      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
   },
@@ -52,25 +33,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/favicon.ico?t=1" sizes="any" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="16x16" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="96x96" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="192x192" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="256x256" />
-        <link rel="icon" href="/icon.png?t=1" type="image/png" sizes="512x512" />
-        <link rel="shortcut icon" href="/favicon.ico?t=1" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="57x57" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="60x60" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="72x72" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="76x76" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="114x114" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="120x120" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="144x144" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="152x152" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="180x180" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="256x256" />
-        <link rel="apple-touch-icon" href="/icon.png" sizes="512x512" />
+        <link rel="icon" href="/favicon.ico?t=2" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico?t=2" type="image/x-icon" />
         <meta name="theme-color" content="#6366f1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
