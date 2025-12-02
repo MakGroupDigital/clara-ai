@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   description: 'Entretien Vidéo pré-enregistré analysé par l\'IA et Scoring de Matching Intelligent.',
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/logo.svg', sizes: 'any', type: 'image/svg+xml' },
     ],
-    shortcut: '/favicon.ico',
+    shortcut: '/logo.svg',
   },
 };
 
@@ -33,8 +33,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/favicon.ico?t=2" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico?t=2" type="image/x-icon" />
+        <link rel="icon" href="/logo.svg?t=3" type="image/svg+xml" sizes="any" />
+        <link rel="shortcut icon" href="/logo.svg?t=3" type="image/svg+xml" />
         <meta name="theme-color" content="#6366f1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
