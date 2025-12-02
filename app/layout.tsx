@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/opengraph-image',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Clara.ai - Le Recrutement, Réinventé par l\'IA',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Clara.ai - L\'assistante RH moderne',
     description: 'Entretien Vidéo pré-enregistré analysé par l\'IA et Scoring de Matching Intelligent.',
-    images: ['/opengraph-image'],
+    images: ['/og-image.png'],
   },
 };
 
