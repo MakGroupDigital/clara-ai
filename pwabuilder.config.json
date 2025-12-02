@@ -1,0 +1,41 @@
+{
+  "site": "https://clara.ai",
+  "name": "Clara.ai",
+  "shortName": "Clara.ai",
+  "description": "L'assistante RH moderne pour un recrutement plus juste et efficace",
+  "backgroundColor": "#000000",
+  "themeColor": "#6366f1",
+  "startUrl": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [],
+  "shareTarget": {},
+  "android": {
+    "package": "com.ybsinnovate.claraai",
+    "versionCode": 1,
+    "versionName": "1.0.0",
+    "minSdkVersion": 21,
+    "targetSdkVersion": 33,
+    "appVersionName": "1.0.0",
+    "appVersionCode": 1,
+    "enableNotifications": true,
+    "signingKey": {
+      "path": "",
+      "alias": ""
+    }
+  }
+}
+
