@@ -36,11 +36,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/favicon.ico',
+        source: '/logo.svg',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=0, must-revalidate',
+          },
+          {
+            key: 'Content-Type',
+            value: 'image/svg+xml',
           },
         ],
       },
