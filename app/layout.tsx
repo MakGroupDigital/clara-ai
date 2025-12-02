@@ -18,6 +18,25 @@ export const metadata: Metadata = {
     ],
     shortcut: '/logo.svg',
   },
+  openGraph: {
+    title: 'Clara.ai - L\'assistante RH moderne',
+    description: 'Entretien Vidéo pré-enregistré analysé par l\'IA et Scoring de Matching Intelligent.',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Clara.ai - Le Recrutement, Réinventé par l\'IA',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Clara.ai - L\'assistante RH moderne',
+    description: 'Entretien Vidéo pré-enregistré analysé par l\'IA et Scoring de Matching Intelligent.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RootLayout({
