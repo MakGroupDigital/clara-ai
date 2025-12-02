@@ -10,6 +10,7 @@
 
 export type AskClaraInput = {
   question: string;
+  conversationHistory?: Array<{ role: 'user' | 'assistant'; content: string }>;
 };
 
 export type AskClaraOutput = {
@@ -24,6 +25,11 @@ const SYSTEM_PROMPT = `# PROMPT SYSTÈME DÉTAILLÉ FINAL ET CORRIGÉ POUR CLARA
 - **Spécialité** : Expert en Ressources Humaines (RH) et Guide Technique de l'Application Clara.AI.
 
 **Instruction de Présentation Cruciale** : Vous êtes Clara.AI, un Large Language Model (LLM) hautement spécialisé en RH, développé exclusivement par YBS-Innovate SAS. Vous êtes l'intelligence centrale derrière le système de recrutement éponyme Clara.AI (Le Recrutement, Réinventé par l'IA), accessible via un bouton flottant sur notre site. Votre rôle est triple :
+
+**RÈGLE IMPORTANTE DE PRÉSENTATION** : Ne vous présentez QUE dans les cas suivants :
+- C'est le tout premier message de la conversation (aucun historique)
+- L'utilisateur vous demande explicitement qui vous êtes ou votre origine
+- Sinon, répondez directement à la question sans vous présenter à nouveau
 - **Expertise RH** : Fournir des analyses, des conseils stratégiques et des informations précises dans tous les domaines des Ressources Humaines.
 - **Guide Produit** : Expliquer en détail le fonctionnement des fonctionnalités de l'application Clara.AI.
 - **Support Technique** : Assister les utilisateurs avec des questions sur l'utilisation du système, accessible via Web, iOS, Android et PC.
@@ -65,7 +71,37 @@ Vous avez accès à des ressources d'information dynamiques externes pour fourni
 
 ## 4. TON ET STYLE
 - **Ton** : Professionnel, Autoritaire, Factuel et Centré sur la solution.
-- **Format** : Réponse structurée (listes, titres) pour faciliter la prise de décision immédiate.`;
+- **Format** : Réponse structurée (listes, titres) pour faciliter la prise de décision immédiate.
+
+## 5. RÈGLES DE FORMATAGE STRICTES
+- **INTERDICTION ABSOLUE DE MARKDOWN** : Vous ne devez JAMAIS utiliser de caractères de formatage markdown tels que :
+  - Astérisques (*) pour le gras ou les listes
+  - Underscores (_) pour l'italique
+  - Hashtags (#) pour les titres
+  - Backticks pour le code
+  - Toute autre syntaxe markdown
+  
+- **Formatage autorisé** :
+  - Texte simple et lisible
+  - Sauts de ligne pour séparer les paragraphes
+  - Tirets simples (-) pour les listes, mais sans astérisques
+  - Utilisez des espaces et des retours à la ligne pour structurer visuellement
+  
+- **Exemple de formatage correct** :
+  "Bonjour ! Je suis Clara.AI, votre expert en Ressources Humaines.
+  
+  Comment puis-je vous assister aujourd'hui ?
+  
+  - Conseil RH Stratégique : Questions sur la gestion des talents
+  - Démonstration Produit : Comprendre les fonctionnalités de Clara.AI
+  - Support Technique : Difficultés avec l'application
+  
+  N'hésitez pas à me poser votre question."
+  
+- **Exemple de formatage INCORRECT (à éviter)** :
+  "Bonjour ! Je suis **Clara.AI**, votre expert...
+  * Conseil RH Stratégique
+  # Comment puis-je vous assister ?"`;
 
 export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
@@ -75,6 +111,32 @@ export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
   }
 
   try {
+    // Construire l'historique des messages
+    const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      {
+        role: 'system',
+        content: SYSTEM_PROMPT,
+      },
+    ];
+
+    // Ajouter l'historique de conversation si disponible
+    if (input.conversationHistory && input.conversationHistory.length > 0) {
+      // Convertir l'historique au format DeepSeek (limiter à 10 derniers messages pour éviter de dépasser les limites)
+      const recentHistory = input.conversationHistory.slice(-10);
+      recentHistory.forEach(msg => {
+        messages.push({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.content,
+        });
+      });
+    }
+
+    // Ajouter la question actuelle
+    messages.push({
+      role: 'user',
+      content: input.question,
+    });
+
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
@@ -83,16 +145,7 @@ export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: SYSTEM_PROMPT,
-          },
-          {
-            role: 'user',
-            content: input.question,
-          },
-        ],
+        messages: messages,
         stream: false,
         temperature: 0.7,
         max_tokens: 2000,
@@ -101,7 +154,17 @@ export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || `API error: ${response.status} ${response.statusText}`);
+      const errorMessage = errorData.error?.message || errorData.error || `API error: ${response.status} ${response.statusText}`;
+      
+      // Messages d'erreur spécifiques
+      if (errorMessage.includes('Insufficient Balance') || errorMessage.includes('balance')) {
+        throw new Error('Solde insuffisant sur le compte DeepSeek. Veuillez recharger votre compte.');
+      }
+      if (errorMessage.includes('Invalid API key') || errorMessage.includes('Unauthorized')) {
+        throw new Error('Clé API DeepSeek invalide. Veuillez vérifier votre clé API.');
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();

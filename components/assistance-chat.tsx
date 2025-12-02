@@ -11,6 +11,7 @@ import { MessageCircleQuestion, Send, Bot, User, Loader } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/logo';
+import { formatMessageForDisplay } from '@/lib/format-message';
 type Message = {
     role: 'user' | 'assistant';
     content: string;
@@ -28,17 +29,27 @@ export function AssistanceChat() {
 
         const userMessage: Message = { role: 'user', content: input };
         const currentInput = input;
-        setMessages(prev => [...prev, userMessage]);
+        const currentMessages = [...messages, userMessage];
+        setMessages(currentMessages);
         setInput('');
         setIsLoading(true);
 
         try {
+            // Préparer l'historique de conversation (sans le message actuel qui vient d'être ajouté)
+            const conversationHistory = messages.map(msg => ({
+                role: msg.role,
+                content: msg.content,
+            }));
+
             const response = await fetch('/api/assistance', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ question: currentInput }),
+                body: JSON.stringify({ 
+                    question: currentInput,
+                    conversationHistory: conversationHistory
+                }),
             });
 
             const result = await response.json();
@@ -53,9 +64,10 @@ export function AssistanceChat() {
                 return;
             }
 
+            const rawAnswer = result.answer || result.error || 'Désolé, une erreur est survenue.';
             const assistantMessage: Message = { 
                 role: 'assistant', 
-                content: result.answer || result.error || 'Désolé, une erreur est survenue.' 
+                content: rawAnswer
             };
             setMessages(prev => [...prev, assistantMessage]);
         } catch (error: any) {
@@ -138,7 +150,13 @@ export function AssistanceChat() {
                                         ? 'bg-primary text-primary-foreground'
                                         : 'bg-muted'
                                 )}>
-                                    <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
+                                    {message.role === 'assistant' ? (
+                                        <div className="text-xs sm:text-sm leading-relaxed">
+                                            {formatMessageForDisplay(message.content)}
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                                    )}
                                 </div>
                                 {message.role === 'user' && (
                                      <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border-2 border-muted-foreground/50 flex-shrink-0">

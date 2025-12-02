@@ -4,7 +4,7 @@ import { askClara } from '@/ai/flows/assistance-flow';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { question } = body;
+    const { question, conversationHistory } = body;
 
     if (!question || typeof question !== 'string') {
       return NextResponse.json(
@@ -30,7 +30,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await askClara({ question });
+    const result = await askClara({ 
+      question,
+      conversationHistory: conversationHistory || []
+    });
     
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
@@ -39,10 +42,14 @@ export async function POST(request: Request) {
     // Message d'erreur plus spécifique selon le type d'erreur
     let errorMessage = 'Désolé, une erreur est survenue. Veuillez réessayer plus tard.';
     
-    if (error.message?.includes('API key') || error.message?.includes('FAILED_PRECONDITION')) {
-      errorMessage = 'Le service d\'assistance nécessite une configuration API. Veuillez contacter l\'administrateur.';
+    if (error.message?.includes('Solde insuffisant') || error.message?.includes('balance')) {
+      errorMessage = 'Le compte DeepSeek n\'a pas suffisamment de crédit. Veuillez recharger votre compte sur https://platform.deepseek.com';
+    } else if (error.message?.includes('API key') || error.message?.includes('Invalid API key') || error.message?.includes('Unauthorized')) {
+      errorMessage = 'Clé API DeepSeek invalide. Veuillez vérifier la configuration.';
     } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
       errorMessage = 'Le service a atteint sa limite d\'utilisation. Veuillez réessayer plus tard.';
+    } else if (error.message) {
+      errorMessage = error.message;
     }
     
     return NextResponse.json(
