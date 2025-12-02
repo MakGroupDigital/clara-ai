@@ -1,0 +1,4 @@
+#Tue Dec 02 13:21:32 WAT 2025
+base.0=/Users/mac/clara-ai/clara-ai/android-app/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

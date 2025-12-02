@@ -6,14 +6,13 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   
   // Configuration pour forcer l'inclusion des dépendances externes
-  experimental: {
-    serverComponentsExternalPackages: [
-      'genkit',
-      '@genkit-ai/core',
-      '@genkit-ai/google-genai',
-      'protobufjs',
-    ],
-  },
+  // Déplacé de experimental.serverComponentsExternalPackages vers serverExternalPackages (Next.js 15+)
+  serverExternalPackages: [
+    'genkit',
+    '@genkit-ai/core',
+    '@genkit-ai/google-genai',
+    'protobufjs',
+  ],
   
   // 🎯 LIGNE AJOUTÉE POUR CONTOURNER L'ERREUR DART SASS
   sassOptions: {}, 

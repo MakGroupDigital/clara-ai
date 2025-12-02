@@ -1,9 +1,0 @@
-{
-  "name": "clara-ai-android",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "cd app && ../../gradlew assembleRelease",
-    "build:apk": "cd app && ../../gradlew assembleRelease"
-  }
-}
-
