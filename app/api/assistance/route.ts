@@ -13,22 +13,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Vérifier si la clé API est configurée
-    const apiKey = process.env.DEEPSEEK_API_KEY;
-    if (!apiKey) {
-      console.error('Clé API DeepSeek non configurée');
-      console.error('Variables d\'environnement disponibles:', {
-        DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY ? '***' : 'undefined',
-        NODE_ENV: process.env.NODE_ENV,
-      });
-      return NextResponse.json(
-        { 
-          error: 'Configuration manquante',
-          answer: 'Le service d\'assistance nécessite une configuration API. Veuillez vérifier que le secret DEEPSEEK_API_KEY est configuré dans Google Cloud Secret Manager pour la production.'
-        },
-        { status: 503 }
-      );
-    }
+    // Clé API DeepSeek directement dans le code pour la production
+    const apiKey = 'sk-8feff3889a55469b838950a83fdbb1bd';
 
     const result = await askClara({ 
       question,

@@ -323,7 +323,6 @@ export default function LandingPage() {
                      <ul className="space-y-2">
                          <li><Link href="/features" className="text-muted-foreground hover:text-primary">Fonctionnalités</Link></li>
                          <li><Link href="/try" className="text-muted-foreground hover:text-primary">Tarifs</Link></li>
-                         <li><Link href="/login" className="text-muted-foreground hover:text-primary">Se connecter</Link></li>
                          <li><Link href="/terms" className="text-muted-foreground hover:text-primary">Politique d'utilisation</Link></li>
                          <li><Link href="/legal-notice" className="text-muted-foreground hover:text-primary">Mentions légales</Link></li>
                          <li><Link href="/cookies" className="text-muted-foreground hover:text-primary">Cookies</Link></li>

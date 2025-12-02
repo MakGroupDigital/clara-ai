@@ -104,11 +104,8 @@ Vous avez accès à des ressources d'information dynamiques externes pour fourni
   # Comment puis-je vous assister ?"`;
 
 export async function askClara(input: AskClaraInput): Promise<AskClaraOutput> {
-  const apiKey = process.env.DEEPSEEK_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error('DEEPSEEK_API_KEY is not configured');
-  }
+  // Clé API DeepSeek directement dans le code pour la production
+  const apiKey = 'sk-8feff3889a55469b838950a83fdbb1bd';
 
   try {
     // Construire l'historique des messages

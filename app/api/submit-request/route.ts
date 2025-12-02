@@ -2,9 +2,8 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Important: La clé API est lue depuis les variables d'environnement
-// pour des raisons de sécurité.
-const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_QyQ7cScZ_L7xePczkYQ6GGe3s6Pjzq2SN';
+// Clé API Resend directement dans le code pour la production
+const RESEND_API_KEY = 're_QyQ7cScZ_L7xePczkYQ6GGe3s6Pjzq2SN';
 const resend = new Resend(RESEND_API_KEY);
 
 export async function POST(request: Request) {
