@@ -77,3 +77,5 @@ Pour **TOUTES** les autres questions qui apparaissent:
 
 C'est tout ! Les valeurs par défaut sont correctes car elles viennent de votre manifest PWA.
 
+
+

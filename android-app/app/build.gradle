@@ -154,7 +154,7 @@ android {
         release {
             storeFile file('../android.keystore')
             storePassword System.getenv("KEYSTORE_PASSWORD")
-            keyAlias "clara-ai"
+            keyAlias "android"
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }

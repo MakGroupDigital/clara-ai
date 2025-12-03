@@ -56,3 +56,5 @@ echo "🧪 Vérifiez l'installation:"
 echo "   java -version"
 echo ""
 
+
+

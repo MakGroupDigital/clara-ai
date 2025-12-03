@@ -3,8 +3,8 @@
 # min_api: 21
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: 61fc232
-# pg_map_hash: SHA-256 61fc23231a92009ac40a40b12955bcb6e53d3d5f4c57f428ebc7debc881ea6a5
+# pg_map_id: 6538a9b
+# pg_map_hash: SHA-256 6538a9b52510c72b3a1615a81e4691c1f56f745151abf13d54de78e53f79c865
 android.support.customtabs.ICustomTabsCallback -> a.a:
 # {"id":"sourceFile","fileName":"ICustomTabsCallback.java"}
     java.lang.String DESCRIPTOR -> a
@@ -25041,9 +25041,42 @@ site.claraai.rh.twa.DelegationService -> site.claraai.rh.twa.DelegationService:
     1:4:void onCreate():9:9 -> onCreate
 site.claraai.rh.twa.LauncherActivity -> site.claraai.rh.twa.LauncherActivity:
 # {"id":"sourceFile","fileName":"LauncherActivity.java"}
-    1:4:void <init>():25:25 -> <init>
-    1:5:android.net.Uri getLaunchingUrl():48:48 -> i
-    1:3:void onCreate(android.os.Bundle):33:33 -> onCreate
-    4:10:void onCreate(android.os.Bundle):38:38 -> onCreate
-    11:14:void onCreate(android.os.Bundle):39:39 -> onCreate
-    15:18:void onCreate(android.os.Bundle):41:41 -> onCreate
+    1:4:void <init>():27:27 -> <init>
+    1:5:android.net.Uri getLaunchingUrl():93:93 -> i
+    1:3:void onCreate(android.os.Bundle):35:35 -> onCreate
+    4:6:void onCreate(android.os.Bundle):38:38 -> onCreate
+    7:13:void onCreate(android.os.Bundle):44:44 -> onCreate
+    14:17:void onCreate(android.os.Bundle):45:45 -> onCreate
+    18:21:void onCreate(android.os.Bundle):47:47 -> onCreate
+    1:3:void onResume():61:61 -> onResume
+    4:7:void onResume():62:62 -> onResume
+    1:5:void onWindowFocusChanged(boolean):53:53 -> onWindowFocusChanged
+    6:9:void onWindowFocusChanged(boolean):55:55 -> onWindowFocusChanged
+    1:2:void enableImmersiveMode():66:66 -> q
+    3:12:void enableImmersiveMode():67:67 -> q
+    13:19:void enableImmersiveMode():75:75 -> q
+    20:27:void enableImmersiveMode():79:79 -> q
+    28:35:void enableImmersiveMode():80:80 -> q
+    36:39:void enableImmersiveMode():81:81 -> q
+    40:42:void enableImmersiveMode():80:80 -> q
+    43:55:void enableImmersiveMode():83:83 -> q
+site.claraai.rh.twa.LauncherActivity$$ExternalSyntheticApiModelOutline0 -> X.a:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:1:void X.LauncherActivity$$ExternalSyntheticApiModelOutline0.m(android.view.Window,boolean):0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+site.claraai.rh.twa.LauncherActivity$$ExternalSyntheticApiModelOutline1 -> X.b:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:1:android.view.WindowInsetsController X.LauncherActivity$$ExternalSyntheticApiModelOutline1.m(android.view.Window):0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+site.claraai.rh.twa.LauncherActivity$$ExternalSyntheticApiModelOutline2 -> X.c:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:1:void X.LauncherActivity$$ExternalSyntheticApiModelOutline2.m(android.view.WindowInsetsController,int):0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+site.claraai.rh.twa.LauncherActivity$$ExternalSyntheticApiModelOutline3 -> X.d:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:1:void X.LauncherActivity$$ExternalSyntheticApiModelOutline3.m(android.view.WindowInsetsController,int):0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}

@@ -9,6 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     background_color: '#000000',
     theme_color: '#6366f1',
+    orientation: 'portrait',
+    scope: '/',
     icons: [
       {
         src: '/icon-192.png',
@@ -27,6 +29,12 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',
+      },
+      {
+        src: '/icon-clara.png',
+        sizes: '650x601',
+        type: 'image/png',
+        purpose: 'any',
       },
       {
         src: '/logo.svg',

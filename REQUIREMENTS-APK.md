@@ -114,3 +114,5 @@ npm run build:apk
 - Installation Java: 5-10 minutes
 - Génération APK: 5-15 minutes (première fois, plus rapide ensuite)
 
+
+

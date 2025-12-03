@@ -86,8 +86,10 @@
         <activity
             android:name="site.claraai.rh.twa.LauncherActivity"
             android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="true"
-            android:label="@string/launcherName" >
+            android:label="@string/launcherName"
+            android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.customtabs.trusted.DEFAULT_URL"
                 android:value="@string/launchUrl" />

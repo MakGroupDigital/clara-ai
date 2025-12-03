@@ -129,3 +129,5 @@ echo "   jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256"
 echo "   -keystore votre-cle.jks app-release-unsigned.apk alias-name"
 echo ""
 
+
+

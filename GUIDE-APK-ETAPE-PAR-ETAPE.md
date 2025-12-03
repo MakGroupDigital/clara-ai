@@ -134,3 +134,5 @@ Si vous préférez éviter l'installation locale:
 **Avantage:** Pas besoin d'installer Java ou Android SDK
 **Inconvénient:** Moins de contrôle sur la configuration
 
+
+

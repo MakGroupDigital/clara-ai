@@ -8,6 +8,7 @@
   "theme_color": "#6366f1",
   "orientation": "portrait",
   "scope": "/",
+  "splash_pages": null,
   "icons": [
     {
       "src": "/icon-192.png",
@@ -28,11 +29,10 @@
       "purpose": "maskable"
     },
     {
-      "src": "/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/icon-clara.png",
+      "sizes": "650x601",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
 }
-
